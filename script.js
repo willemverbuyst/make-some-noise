@@ -3,13 +3,12 @@ const AudioContext =
   window.webkitAudioContext || // Safari and old versions of Chrome
   false;
 
-const ctx = new AudioContext();
-let osc;
+let hz = 440;
 
 const soundButton = document.getElementById('sound-btn');
 soundButton.addEventListener('click', () => {
   osc = ctx.createOscillator();
-  osc.frequency.value = 440;
+  osc.frequency.value = hz;
   osc.start(0);
   osc.connect(ctx.destination);
 });
@@ -20,3 +19,14 @@ stopButton.addEventListener('click', () => {
   osc.disconnect(ctx.destination);
   osc = null;
 });
+
+const hertzInput = document.getElementById('hertz');
+hertzInput.addEventListener('change', () => {
+  console.log(hertzInput.value);
+  hz = +hertzInput.value;
+});
+
+const ctx = new AudioContext();
+osc = ctx.createOscillator();
+
+osc.frequency.value = hz;
