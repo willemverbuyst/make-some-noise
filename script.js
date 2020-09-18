@@ -6,6 +6,7 @@ const AudioContext =
 const hertzInput = document.getElementById('hertz');
 const startButton = document.getElementById('start-btn');
 const stopButton = document.getElementById('stop-btn');
+const oscillationtype = document.getElementById('oscillation-type');
 
 const ctx = new AudioContext();
 let osc = ctx.createOscillator();
@@ -31,3 +32,5 @@ stopButton.addEventListener('click', stopSound);
 hertzInput.addEventListener('change', () => {
   osc.frequency.setValueAtTime(hertzInput.value, 0);
 });
+
+oscillationtype.addEventListener('change', (e) => (osc.type = e.target.value));
