@@ -3,30 +3,31 @@ const AudioContext =
   window.webkitAudioContext || // Safari and old versions of Chrome
   false;
 
-let hz = 440;
-
-const soundButton = document.getElementById('sound-btn');
-soundButton.addEventListener('click', () => {
-  osc = ctx.createOscillator();
-  osc.frequency.value = hz;
-  osc.start(0);
-  osc.connect(ctx.destination);
-});
-
+const hertzInput = document.getElementById('hertz');
+const startButton = document.getElementById('start-btn');
 const stopButton = document.getElementById('stop-btn');
-stopButton.addEventListener('click', () => {
+
+const ctx = new AudioContext();
+let osc = ctx.createOscillator();
+osc.connect(ctx.destination);
+osc.frequency.value = +hertzInput.value;
+
+const createSound = () => {
+  osc = ctx.createOscillator();
+  osc.connect(ctx.destination);
+  osc.start(0);
+};
+
+const stopSound = () => {
   osc.stop();
   osc.disconnect(ctx.destination);
   osc = null;
-});
+};
 
-const hertzInput = document.getElementById('hertz');
+startButton.addEventListener('click', createSound);
+
+stopButton.addEventListener('click', stopSound);
+
 hertzInput.addEventListener('change', () => {
-  console.log(hertzInput.value);
-  hz = +hertzInput.value;
+  osc.frequency.setValueAtTime(hertzInput.value, 0);
 });
-
-const ctx = new AudioContext();
-osc = ctx.createOscillator();
-
-osc.frequency.value = hz;
